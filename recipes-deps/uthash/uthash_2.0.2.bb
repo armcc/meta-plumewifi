@@ -21,6 +21,10 @@ SRC_URI[sha256sum] = "34a31d51dd7a839819cecd6f46049b4ffe031d7f3147d9a042f5504fdb
 
 inherit ptest
 
+# We don't want '-e MAKEFLAGS=' in EXTRA_OEMAKE since it causes CFLAGS etc set
+# by the tests/Makefile to be over-ridden by values from the OE environment.
+EXTRA_OEMAKE = ""
+
 do_compile[noexec] = "1"
 
 do_compile_ptest() {
