@@ -1,0 +1,29 @@
+From 4a59fed1e5c70c98499d96d883b15f4f3c7c859f Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Tue, 26 Jun 2018 14:42:08 -0700
+Subject: [PATCH] workaround bug in automake 1.14 and 1.4.1
+
+  http://git.savannah.gnu.org/cgit/automake.git/commit/?id=0015156bcc4d25db3c5504b29618fe1a02c1e4f6
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ configure.ac | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 7e2d5e3..30f12ab 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -4,7 +4,8 @@ orig_CFLAGS="$CFLAGS"
+ 
+ AC_CONFIG_SRCDIR([ev_epoll.c])
+ 
+-AM_INIT_AUTOMAKE(libev,4.19) dnl also update ev.h!
++dnl also update ev.h!
++AM_INIT_AUTOMAKE(libev,4.19)
+ AC_CONFIG_HEADERS([config.h])
+ AM_MAINTAINER_MODE
+ 
+-- 
+1.9.1
+
