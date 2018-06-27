@@ -1,0 +1,50 @@
+From d6ac08c8bae2f3e0dbeb7735ab49f81fc8d64230 Mon Sep 17 00:00:00 2001
+From: Zex <top_zlynch@yahoo.com>
+Date: Sun, 15 Feb 2015 18:34:24 +0800
+Subject: [PATCH] skip protoc-c tests on cross-compiling
+
+---
+ Makefile.am  | 7 +++++++
+ configure.ac | 1 +
+ 2 files changed, 8 insertions(+)
+
+diff --git a/Makefile.am b/Makefile.am
+index 605ba83..e0a5641 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -111,6 +111,12 @@ protoc_c_protoc_c_LDADD = \
+ # protobuf-c tests
+ #
+ 
++if CROSS_COMPILING
++#
++# skip tests on cross-compiling
++#
++else
++
+ LOG_COMPILER = $(VALGRIND)
+ 
+ check_PROGRAMS += \
+@@ -175,6 +181,7 @@ t_version_version_SOURCES = \
+ 	t/version/version.c
+ t_version_version_LDADD = \
+ 	protobuf-c/libprotobuf-c.la
++endif # CROSS_COMPILING
+ 
+ endif # BUILD_COMPILER
+ 
+diff --git a/configure.ac b/configure.ac
+index e0af58e..9e86d74 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -67,6 +67,7 @@ else
+   PROTOBUF_VERSION="not required, not building compiler"
+ fi
+ AM_CONDITIONAL([BUILD_COMPILER], [test "x$enable_protoc" != "xno"])
++AM_CONDITIONAL([CROSS_COMPILING], [test "x$cross_compiling" != "xno"])
+ 
+ gl_LD_VERSION_SCRIPT
+ 
+-- 
+1.9.1
+
