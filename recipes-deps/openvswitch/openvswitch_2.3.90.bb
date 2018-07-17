@@ -21,6 +21,7 @@ SRC_URI = "git://github.com/openvswitch/ovs.git;protocol=https \
            file://0003-datapath-do-not-add-vlan_hwaccel_push_inside-for-ker.patch \
            file://0004-matej-dont-do-that-do-aproper-one.patch \
            file://disable_m4_check.patch \
+           file://don-t-include-net-if_packet.h-if-it-s-not-available.patch \
 "
 
 S = "${WORKDIR}/git"
