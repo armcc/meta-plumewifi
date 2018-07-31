@@ -53,6 +53,37 @@ SRC_URI_append_class-nativesdk = " \
            file://environment.d-openssl.sh \
            "
 
+# ----------------------------------------------------------------------------
+# By default upstream openssl 1.0.2x sets the libssl and libcrypto soname to "1.0.0".
+# The OE patches change that to "1.0.2", based on analysis that the APIs between
+# all 1.0.x versions have not remained binary compatible. However Buildroot doesn't
+# change the soname (and therefore the current set of Plume prebuilt binaries need
+# "1.0.0"). As a temp solution to support these prebuilt binaries created with
+# Buildroot drop OE's soname change patch. See also:
+# https://bugzilla.yoctoproject.org/show_bug.cgi?id=11396
+# https://github.com/flatpak/freedesktop-sdk-images/issues/25
+# ----------------------------------------------------------------------------
+SRC_URI_remove = "file://debian1.0.2/soname.patch"
+# ----------------------------------------------------------------------------
+# Related to the above issue (ie upstream openssl doesn't bump the soname when
+# making API changes) Debian try to prevent runtime mis-matches by versioning
+# all symbols in the openssl shared libs. This also causes problems when trying
+# to use apps etc built with Buildroot with a version of openssl built with the
+# versioned symbols patch. Therefore drop this patch too.
+# ----------------------------------------------------------------------------
+SRC_URI_remove = "file://debian1.0.2/version-script.patch"
+# ----------------------------------------------------------------------------
+# If we drop the Debian symbol versioning script, then we should also drop the
+# Debian patch to remove -Bsymbolic from the linker flags. For background on
+# the meaning of -Bsymbolic, how it related to symbol versioning and why
+# upstream openssl enables it, see:
+# https://software.intel.com/en-us/articles/performance-tools-for-software-developers-bsymbolic-can-cause-dangerous-side-effects
+# https://rt.openssl.org/Ticket/Display.html?id=1521&user=guest&pass=guest
+# https://rt.openssl.org/Ticket/Display.html?id=2466&user=guest&pass=guest
+# ----------------------------------------------------------------------------
+SRC_URI_remove = "file://debian/no-symbolic.patch"
+# ----------------------------------------------------------------------------
+
 SRC_URI[md5sum] = "ac5eb30bf5798aa14b1ae6d0e7da58df"
 SRC_URI[sha256sum] = "50a98e07b1a89eb8f6a99477f262df71c6fa7bef77df4dc83025a2845c827d00"
 
