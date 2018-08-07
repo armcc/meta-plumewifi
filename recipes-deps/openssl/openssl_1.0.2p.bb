@@ -60,7 +60,7 @@ UPSTREAM_CHECK_REGEX = "openssl-(?P<pver>1\.0.+)\.tar"
 
 inherit pkgconfig siteinfo multilib_header ptest
 
-PACKAGECONFIG ?= "cryptodev-linux"
+PACKAGECONFIG ?= ""
 PACKAGECONFIG_class-native = ""
 PACKAGECONFIG_class-nativesdk = ""
 
