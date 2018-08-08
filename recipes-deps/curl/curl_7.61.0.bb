@@ -4,6 +4,7 @@ BUGTRACKER = "http://curl.haxx.se/mail/list.cgi?list=curl-tracker"
 SECTION = "console/network"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING;beginline=8;md5=3a34942f4ae3fbf1a303160714e664ac"
+PR = "r99"
 
 SRC_URI = "http://curl.haxx.se/download/curl-${PV}.tar.bz2 \
            file://0001-replace-krb5-config-with-pkg-config.patch \
@@ -18,6 +19,9 @@ inherit autotools pkgconfig binconfig multilib_header
 PACKAGECONFIG ??= "${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 'ipv6', '', d)} gnutls libidn proxy threaded-resolver verbose zlib"
 PACKAGECONFIG_class-native = "ipv6 proxy ssl threaded-resolver verbose zlib"
 PACKAGECONFIG_class-nativesdk = "ipv6 proxy ssl threaded-resolver verbose zlib"
+
+PACKAGECONFIG_remove_class-target = "gnutls libidn verbose"
+PACKAGECONFIG_append_class-target = " ssl"
 
 # 'ares' and 'threaded-resolver' are mutually exclusive
 PACKAGECONFIG[ares] = "--enable-ares,--disable-ares,c-ares"
@@ -56,6 +60,15 @@ EXTRA_OECONF = " \
     --without-libmetalink \
     --without-libpsl \
 "
+
+EXTRA_OECONF += " \
+    --disable-ftp \
+"
+
+FULL_OPTIMIZATION_append = " -Os"
+
+CFLAGS += "-ffunction-sections -fdata-sections"
+LDFLAGS += "-Wl,--gc-sections"
 
 do_install_append_class-target() {
 	# cleanup buildpaths from curl-config
