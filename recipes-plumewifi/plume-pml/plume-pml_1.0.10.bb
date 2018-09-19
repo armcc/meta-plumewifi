@@ -17,18 +17,10 @@ DEPENDS += "openssl"
 #
 # Currently we need to use a non-standard set of branches to build plume-pml:
 #
-# - We can't use device-vendor-lgi master since the master branch of plume-pml
-#   can only be built using the 2.0.4 branch of device-vendor-lgi.
-#
 # - We can't use the 2.0.4 branch of device-vendor-lgi directly since it is
 #   missing OE build support + gcc 7 and gcc 8 fixes. Therefore use a temporary
 #   fork of device-vendor-lgi ( 2.0.4_lgi ) which has these changes backported
 #   from master.
-#
-# - We can't use the master branch of plume-pml directly since it is missing
-#   gcc 7 and gcc 8 fixes (these have been submitted upstream but not yet
-#   merged). Therefore use a temporary fork of plume-pml ( master_lgi ) which
-#   contains these gcc 7 and gcc 8 build fixes.
 #
 # THIS IS A TEMPORARY SOLUTION - WE SHOULD SWITCH TO THE OFFICIAL UPSTREAM REPOS SOON!
 #
@@ -36,11 +28,11 @@ DEPENDS += "openssl"
 
 PLUME_GIT = "git://git@github.com/armcc"
 
-SRCREV_pml = "42b680a5efa57a59676e2c0788fc175bcb994ca3"
+SRCREV_pml = "c3abb44a98f2fa228d37771521ac9e3e39fdff9a"
 SRCREV_vendor = "f8085649763730dc94ac9a8c0c01ac2a6781e998"
 SRCREV_FORMAT = "pml_vendor"
 
-SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name=pml;branch=master_lgi \
+SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name=pml;branch=pml_1.0.10 \
            ${PLUME_GIT}/device-vendor-lgi.git;protocol=ssh;destsuffix=git/vendor/lgi;name=vendor;branch=2.0.4_lgi \
 "
 
