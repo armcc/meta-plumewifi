@@ -82,6 +82,7 @@ INSANE_SKIP_${PN} += "already-stripped"
 
 INSANE_SKIP_${PN} += "libdir"
 
-# The /usr/plume/tools/lm_log_pull.sh script uses the curl command line tool.
+# Explicit list of non-library runtime dependencies (ie runtime dependencies
+# which are not auto detected).
 
-RDEPENDS_${PN} = "curl"
+RDEPENDS_${PN} += "curl openvswitch"
