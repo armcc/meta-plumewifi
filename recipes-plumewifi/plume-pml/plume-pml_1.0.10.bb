@@ -29,7 +29,7 @@ DEPENDS += "openssl"
 PLUME_GIT = "git://git@github.com/armcc"
 
 SRCREV_pml = "c3abb44a98f2fa228d37771521ac9e3e39fdff9a"
-SRCREV_vendor = "f8085649763730dc94ac9a8c0c01ac2a6781e998"
+SRCREV_vendor = "ac29615a0f8adaa13baf02bc6160ba4b9dd42d62"
 SRCREV_FORMAT = "pml_vendor"
 
 SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name=pml;branch=pml_1.0.10 \
