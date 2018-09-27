@@ -38,6 +38,8 @@ SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name
 
 S = "${WORKDIR}/git/plume-pml"
 
+inherit python3native
+
 PARALLEL_MAKE = ""
 
 PML_TARGET ?= "CH7465CE"
