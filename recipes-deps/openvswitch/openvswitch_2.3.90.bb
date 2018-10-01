@@ -28,7 +28,12 @@ S = "${WORKDIR}/git"
 
 inherit autotools-brokensep perlnative pythonnative
 
-EXTRA_OECONF += "--disable-static --enable-shared"
+# Only the ovsdb-server and ovsdb-client apps are required, and linking them
+# statically with libopenvswitch and libovsdb (rather than shipping the full
+# libopenvswitch.so and libovsdb.so shared libs) gives an overall reduction
+# in rootfs size.
+
+EXTRA_OECONF += "--enable-static --disable-shared"
 
 do_configure_prepend() {
 	# Work around the for Makefile CC=$(if ....) by swapping out any
