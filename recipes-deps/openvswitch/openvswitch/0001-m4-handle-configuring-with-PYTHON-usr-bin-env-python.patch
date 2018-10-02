@@ -1,0 +1,33 @@
+From a3fb19b77fb974b867b4c4079a2be9d1cba1ae36 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Wed, 3 Oct 2018 13:54:06 -0700
+Subject: [PATCH] m4: handle configuring with PYTHON="/usr/bin/env python"
+
+It may sometimes be desirable to have the python path determined at
+run time, ie by setting PYTHON="/usr/bin/env python" etc.
+
+Unfortunately that currently fails as $ovs_cv_python is not always
+quoted and therefore fails to parse correctly if PYTHON is set to a
+value containing spaces.
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ m4/openvswitch.m4 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/m4/openvswitch.m4 b/m4/openvswitch.m4
+index 0cfaae6..dea1255 100644
+--- a/m4/openvswitch.m4
++++ b/m4/openvswitch.m4
+@@ -344,7 +344,7 @@ else:
+       fi])
+    AC_SUBST([HAVE_PYTHON])
+    AM_MISSING_PROG([PYTHON], [python])
+-   if test $ovs_cv_python != no; then
++   if test "$ovs_cv_python" != no; then
+      PYTHON=$ovs_cv_python
+      HAVE_PYTHON=yes
+    else
+-- 
+1.9.1
+
