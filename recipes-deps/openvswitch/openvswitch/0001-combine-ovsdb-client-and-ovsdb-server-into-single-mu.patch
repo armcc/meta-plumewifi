@@ -1,0 +1,103 @@
+From 8dadba2b92b8d7f2b2806581a63c979783080c60 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Wed, 10 Oct 2018 15:19:24 -0700
+Subject: [PATCH] combine ovsdb-client and ovsdb-server into single multicall
+ binary
+
+For cases where only ovsdb-client and ovsdb-server are required, code
+size can be optimised by combining them both together into a single
+multicall binary and linking that binary statically with libovsdb and
+libopenvswitch.
+
+Note that this patch just creates a multicall binary (called
+ovsdb-server). An ovsdb-client symlink needs to be created manually
+(ie it will not be created automatically as part of "make install").
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ ovsdb/automake.mk    |  8 ++++----
+ ovsdb/ovsdb-client.c |  2 +-
+ ovsdb/ovsdb-server.c | 25 +++++++++++++++++++++++++
+ 3 files changed, 30 insertions(+), 5 deletions(-)
+
+diff --git a/ovsdb/automake.mk b/ovsdb/automake.mk
+index 7db6fea..19ebf87 100644
+--- a/ovsdb/automake.mk
++++ b/ovsdb/automake.mk
+@@ -54,9 +54,9 @@ DISTCLEANFILES += ovsdb/ovsdb-tool.1
+ MAN_ROOTS += ovsdb/ovsdb-tool.1.in
+ 
+ # ovsdb-client
+-bin_PROGRAMS += ovsdb/ovsdb-client
+-ovsdb_ovsdb_client_SOURCES = ovsdb/ovsdb-client.c
+-ovsdb_ovsdb_client_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
++#bin_PROGRAMS += ovsdb/ovsdb-client
++#ovsdb_ovsdb_client_SOURCES = ovsdb/ovsdb-client.c
++#ovsdb_ovsdb_client_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
+ # ovsdb-client.1
+ man_MANS += ovsdb/ovsdb-client.1
+ DISTCLEANFILES += ovsdb/ovsdb-client.1
+@@ -64,7 +64,7 @@ MAN_ROOTS += ovsdb/ovsdb-client.1.in
+ 
+ # ovsdb-server
+ sbin_PROGRAMS += ovsdb/ovsdb-server
+-ovsdb_ovsdb_server_SOURCES = ovsdb/ovsdb-server.c
++ovsdb_ovsdb_server_SOURCES = ovsdb/ovsdb-server.c ovsdb/ovsdb-client.c
+ ovsdb_ovsdb_server_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
+ # ovsdb-server.1
+ man_MANS += ovsdb/ovsdb-server.1
+diff --git a/ovsdb/ovsdb-client.c b/ovsdb/ovsdb-client.c
+index 6a28658..c7ac440 100644
+--- a/ovsdb/ovsdb-client.c
++++ b/ovsdb/ovsdb-client.c
+@@ -80,7 +80,7 @@ static struct jsonrpc *open_jsonrpc(const char *server);
+ static void fetch_dbs(struct jsonrpc *, struct svec *dbs);
+ 
+ int
+-main(int argc, char *argv[])
++client_main(int argc, char *argv[])
+ {
+     const struct ovsdb_client_command *command;
+     const char *database;
+diff --git a/ovsdb/ovsdb-server.c b/ovsdb/ovsdb-server.c
+index e14a644..2bc3daf 100644
+--- a/ovsdb/ovsdb-server.c
++++ b/ovsdb/ovsdb-server.c
+@@ -195,9 +195,34 @@ main_loop(struct ovsdb_jsonrpc_server *jsonrpc, struct shash *all_dbs,
+ 
+ }
+ 
++extern int client_main(int argc, char *argv[]);
++static int server_main(int argc, char *argv[]);
++
+ int
+ main(int argc, char *argv[])
+ {
++    char *slash;
++    char *appname;
++
++    slash = strrchr(argv[0], '/');
++    if (slash)
++        appname = slash + 1;
++    else
++        appname = argv[0];
++
++//  printf ("argv[0]: '%s', appname: '%s'\n", argv[0], appname);
++
++    if (!strcmp(appname, "ovsdb-client"))
++        return client_main(argc, argv);
++    if (!strcmp(appname, "ovsdb-server"))
++        return server_main(argc, argv);
++
++    return 1;
++}
++
++static int
++server_main(int argc, char *argv[])
++{
+     char *unixctl_path = NULL;
+     char *run_command = NULL;
+     struct unixctl_server *unixctl;
+-- 
+1.9.1
+

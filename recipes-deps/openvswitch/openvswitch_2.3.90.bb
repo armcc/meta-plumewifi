@@ -22,6 +22,7 @@ SRC_URI = "git://github.com/openvswitch/ovs.git;protocol=https \
            file://0004-matej-dont-do-that-do-aproper-one.patch \
            file://disable_m4_check.patch \
            file://don-t-include-net-if_packet.h-if-it-s-not-available.patch \
+           file://0001-combine-ovsdb-client-and-ovsdb-server-into-single-mu.patch \
 "
 
 S = "${WORKDIR}/git"
@@ -35,10 +36,17 @@ inherit autotools-brokensep perlnative pythonnative
 
 EXTRA_OECONF += "--enable-static --disable-shared"
 
+CFLAGS += "-ffunction-sections -fdata-sections"
+LDFLAGS += "-Wl,--gc-sections"
+
 do_configure_prepend() {
 	# Work around the for Makefile CC=$(if ....) by swapping out any
 	# "-Wa," assembly directives with "-Xassembler
 	CC=`echo '${CC}' | sed 's/-Wa,/-Xassembler /g'`
+}
+
+do_install_append() {
+	ln -sf ${@oe.path.relative('${bindir}', '${sbindir}/ovsdb-server')} ${D}${bindir}/ovsdb-client
 }
 
 PACKAGES += "${PN}-libofproto ${PN}-libopenvswitch ${PN}-libovsdb ${PN}-libsflow ${PN}-misc"

@@ -13,6 +13,7 @@ DEPENDS = "openssl"
 
 SRC_URI = "http://openvswitch.org/releases/openvswitch-2.5.5.tar.gz \
            file://0001-m4-handle-configuring-with-PYTHON-usr-bin-env-python.patch \
+           file://0001-combine-ovsdb-client-and-ovsdb-server-into-single-mu.patch \
 "
 
 SRC_URI[md5sum] = "dc38146f0815348d8347a6b972bd4920"
@@ -29,10 +30,17 @@ EXTRA_OECONF += "PYTHON='/usr/bin/env python' --disable-libcapng"
 
 EXTRA_OECONF += "--enable-static --disable-shared"
 
+CFLAGS += "-ffunction-sections -fdata-sections"
+LDFLAGS += "-Wl,--gc-sections"
+
 do_configure_prepend() {
 	# Work around the for Makefile CC=$(if ....) by swapping out any
 	# "-Wa," assembly directives with "-Xassembler
 	CC=`echo '${CC}' | sed 's/-Wa,/-Xassembler /g'`
+}
+
+do_install_append() {
+	ln -sf ${@oe.path.relative('${bindir}', '${sbindir}/ovsdb-server')} ${D}${bindir}/ovsdb-client
 }
 
 PACKAGES =+ "${PN}-libofproto ${PN}-libopenvswitch ${PN}-libovn ${PN}-libovsdb ${PN}-libsflow ${PN}-libvtep"
