@@ -27,6 +27,22 @@ PACKAGECONFIG[smi] = "--with-smi,--without-smi,libsmi"
 
 EXTRA_AUTORECONF += "-I m4"
 
+# FULL_OPTIMIZATION_append = " -Os"
+
+CFLAGS += "-ffunction-sections -fdata-sections"
+LDFLAGS += "-Wl,--gc-sections"
+
+# Original:
+# -rwxr-xr-x 2 root root 787820 Oct 25 00:07 ../packages-split/tcpdump/usr/sbin/tcpdump
+# gc-sections
+# -rwxr-xr-x 2 root root 785452 Oct 25 16:45 ../packages-split/tcpdump/usr/sbin/tcpdump
+# -Os
+# -rwxr-xr-x 2 root root 650608 Oct 25 16:40 ../packages-split/tcpdump/usr/sbin/tcpdump
+# -Os + gc-sections
+# -rwxr-xr-x 2 root root 649504 Oct 25 16:47 ../packages-split/tcpdump/usr/sbin/tcpdump
+
+# AC_CHECK_LIB(pcap, pcap_compile, LIBS="$LIBS -l:libpcap.a -ldbus-1")
+
 do_configure_prepend() {
     mkdir -p ${S}/m4
     if [ -f aclocal.m4 ]; then
