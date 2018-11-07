@@ -19,6 +19,7 @@ SRCREV_FORMAT = "pml_vendor"
 
 SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name=pml;branch=pml_1.2.1 \
            ${PLUME_GIT}/device-vendor-lgi.git;protocol=ssh;destsuffix=git/vendor/lgi;name=vendor;branch=master \
+           file://0001-Revert-PML-1.2-Move-hadling-of-the-DHCP_leased_IP-ta.patch \
 "
 
 S = "${WORKDIR}/git/plume-pml"
