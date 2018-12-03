@@ -14,7 +14,7 @@ DEPENDS += "${@'cbnapps' if os.path.isfile('${COREBASE}/meta-cbnapps/conf/layer.
 DEPENDS += "openssl"
 
 SRCREV_pml = "631129caf1a8355057aac53df2738d9e1e895bad"
-SRCREV_vendor = "363b23f35680883f8b0636913a59f44578e360f6"
+SRCREV_vendor = "13be2d77ed38ce54298ea677d93c35050112b43d"
 SRCREV_FORMAT = "pml_vendor"
 
 SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name=pml;branch=pml_1.2.1 \
