@@ -11,13 +11,13 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=247d8817aece26b21a8cd6791b3ea994"
 
 DEPENDS = "openssl"
 
-SRC_URI = "http://openvswitch.org/releases/openvswitch-2.5.5.tar.gz \
+SRC_URI = "https://www.openvswitch.org/releases/${BP}.tar.gz \
            file://0001-m4-handle-configuring-with-PYTHON-usr-bin-env-python.patch \
            file://0001-combine-ovsdb-client-and-ovsdb-server-into-single-mu.patch \
 "
 
-SRC_URI[md5sum] = "dc38146f0815348d8347a6b972bd4920"
-SRC_URI[sha256sum] = "a7c56ce91546de025e1b2934811657c471f52700981233a176827c22615cfb4a"
+SRC_URI[md5sum] = "4b27da13c7f0c76c56bdcfa76deb0e77"
+SRC_URI[sha256sum] = "447e739671136c152c7c5212909322a3e96b98628312b1780669cbd64063f293"
 
 inherit autotools perlnative pythonnative
 
