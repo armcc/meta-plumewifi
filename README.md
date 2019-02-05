@@ -88,3 +88,45 @@ drwxr-xr-x root/root         0 2018-09-21 14:58 ./etc/init.d/
 -rwxr-xr-x root/root      2071 2018-09-21 14:58 ./etc/init.d/managers
 ```
 
+# Alternative instructions for building with OE 1.6 (Daisy)
+
+OE 1.6 was released in Apr 2014. It is no longer maintained upstream and requires various fixes to build cleanly. The steps described below are based on the unofficial lgirdk "daisy-next" branch of openembedded-core which contains these fixes.
+
+Note that building on recent host distro may not work (upto Ubuntu 16.04 should be OK).
+
+```shell
+git clone git://github.com/lgirdk/openembedded-core.git -b daisy-next
+git clone git://github.com/openembedded/bitbake.git openembedded-core/bitbake -b 1.22
+git clone git://github.com/armcc/meta-plumewifi.git
+
+source ./openembedded-core/oe-init-build-env
+```
+
+Add meta-plumewifi to the set of active meta layers (use sed as OE 1.6 lacks "bitbake-layers add-layer"):
+
+```shell
+sed '/meta-plumewifi /d; /meta /a\  '$(cd ../meta-plumewifi && pwd)' \\' -i conf/bblayers.conf
+```
+
+Break an unnecessary default dependency on libsdl from the host:
+
+```shell
+echo 'PACKAGECONFIG_pn-qemu-native_remove = "sdl"' >> conf/local.conf
+echo 'PACKAGECONFIG_pn-nativesdk-qemu_remove = "sdl"' >> conf/local.conf
+sed '/libsdl-native/d' -i conf/local.conf
+```
+
+Define persistent downloads and sstate-cache directories in local.conf (optional):
+
+```shell
+mkdir -p ${HOME}/oe
+echo 'DL_DIR = "${HOME}/oe/downloads"' >> conf/local.conf
+echo 'SSTATE_DIR = "${HOME}/oe/sstate-cache"' >> conf/local.conf
+```
+
+Build:
+
+```shell
+bitbake plume-pml
+```
+
