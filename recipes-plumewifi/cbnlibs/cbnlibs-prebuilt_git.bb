@@ -1,11 +1,13 @@
 SUMMARY = "CBN provided link dependencies for Plume PML (prebuilt)"
 LICENSE = "CLOSED"
 
+PV = "0.0+git${SRCPV}"
+
 # We don't need the full ch7465ce SDK repo (which contains Buildroot sources
 # etc, etc) but it's a convenient way to fetch a well defined version of the
 # CBN prebuilt libs.
 
-SRCREV = "84842a3739237dcffcff41bd1846e7940fbc1881"
+SRCREV = "e2e23eb598ba40e35b838c73b1c5677bce835f32"
 
 SRC_URI = "${PLUME_GIT}/sdk-lgi-isdk-ch7465ce.git;protocol=ssh"
 
