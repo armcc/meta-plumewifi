@@ -15,8 +15,8 @@ DEPENDS += "openssl"
 
 PV .= "+git${SRCPV}"
 
-SRCREV_pml = "bc2ace8506ebd90e1dc2c820c0d4f821483b321d"
-SRCREV_vendor = "13be2d77ed38ce54298ea677d93c35050112b43d"
+SRCREV_pml = "5e9a15821f31ce2cb4c26fcdfcb714c2cf468b7a"
+SRCREV_vendor = "9056e6293347ebcb3e10253ed93fd30621c9b302"
 SRCREV_FORMAT = "pml_vendor"
 
 SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name=pml;branch=pml_1.2.1 \
