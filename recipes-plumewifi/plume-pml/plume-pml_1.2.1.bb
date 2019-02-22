@@ -13,6 +13,8 @@ DEPENDS += "${@'cbnapps' if os.path.isfile('${COREBASE}/meta-cbnapps/conf/layer.
 
 DEPENDS += "openssl"
 
+PV .= "+git${SRCPV}"
+
 SRCREV_pml = "bc2ace8506ebd90e1dc2c820c0d4f821483b321d"
 SRCREV_vendor = "13be2d77ed38ce54298ea677d93c35050112b43d"
 SRCREV_FORMAT = "pml_vendor"
