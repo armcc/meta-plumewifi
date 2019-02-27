@@ -18,6 +18,12 @@ do_compile[noexec] = "1"
 
 do_install() {
     cp -av --no-preserve=ownership ${S}/contrib/libs/* ${D}/
+
+    # Remove any prebuilt libiosf.so libs since they clash with the ones
+    # from the Intel SDK. Nothing in Opensync links directly with them
+    # anyway.
+
+    rm -f ${D}/lib/libiosf.so*
 }
 
 # Prebuilt libs are for x86
@@ -25,13 +31,10 @@ do_install() {
 COMPATIBLE_HOST = "(i.86|x86_64).*-linux"
 
 # The CBN shared libs aren't versioned, so force the .so files into the
-# run-time package (and keep them out of the -dev package). Doing so also
-# forces the libiosf.so symlink into the run-time package, so disable the
-# dev-so sanity check too.
+# run-time package (and keep them out of the -dev package).
 
 FILES_SOLIBSDEV = ""
 FILES_${PN} += "${libdir}/*.so ${base_libdir}/*.so"
-INSANE_SKIP_${PN} += "dev-so"
 
 # All binaries have already been stripped
 
