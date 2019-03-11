@@ -16,11 +16,11 @@ DEPENDS += "openssl"
 PV .= "+git${SRCPV}"
 
 SRCREV_pml = "5e9a15821f31ce2cb4c26fcdfcb714c2cf468b7a"
-SRCREV_vendor = "9056e6293347ebcb3e10253ed93fd30621c9b302"
+SRCREV_vendor = "41e87814e7f2ab9317163c1e4edf35fee861c0b5"
 SRCREV_FORMAT = "pml_vendor"
 
-SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name=pml;branch=pml_1.2.1 \
-           ${PLUME_GIT}/device-vendor-lgi.git;protocol=ssh;destsuffix=git/vendor/lgi;name=vendor;branch=2.0.0-track \
+SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name=pml;branch=osync_1.2.1 \
+           ${PLUME_GIT}/device-vendor-lgi.git;protocol=ssh;destsuffix=git/vendor/lgi;name=vendor;branch=osync_1.2.1 \
            file://0001-Revert-PML-1.2-Move-hadling-of-the-DHCP_leased_IP-ta.patch \
 "
 
