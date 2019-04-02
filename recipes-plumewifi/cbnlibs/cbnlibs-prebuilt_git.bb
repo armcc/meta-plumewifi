@@ -7,7 +7,7 @@ PV = "0.0+git${SRCPV}"
 # etc, etc) but it's a convenient way to fetch a well defined version of the
 # CBN prebuilt libs.
 
-SRCREV = "e2e23eb598ba40e35b838c73b1c5677bce835f32"
+SRCREV = "180a9905bbbd7820a259020999bb1de8eb303804"
 
 SRC_URI = "${PLUME_GIT}/sdk-lgi-isdk-ch7465ce.git;protocol=ssh"
 
