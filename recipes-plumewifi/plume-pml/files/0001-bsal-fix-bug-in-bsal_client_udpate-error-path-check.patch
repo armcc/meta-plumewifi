@@ -1,0 +1,51 @@
+From 2c06c9eeac07b809816698768a35ee6e09f17d91 Mon Sep 17 00:00:00 2001
+From: Bartosz Markowski <bartosz@plume.com>
+Date: Tue, 2 Apr 2019 14:49:44 +0200
+Subject: [PATCH] bsal: fix bug in bsal_client_udpate error path check
+
+| src/bm/src/bm_client.c:379:97: error: comparison of constant '0' with boolean expression is always false [-Werror=bool-compare]
+|              if( !bsal_client_update( pair->bsal, blocked_band, (uint8_t *)&macaddr, &cli_conf ) < 0 ) {
+|                                                                                                  ^
+| src/bm/src/bm_client.c:379:97: error: logical not is only applied to the left hand side of comparison [-Werror=logical-not-parentheses]
+| src/bm/src/bm_client.c:379:17: note: add parentheses around left hand side expression to silence this warning
+|              if( !bsal_client_update( pair->bsal, blocked_band, (uint8_t *)&macaddr, &cli_conf ) < 0 ) {
+|                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|                  (                                                                              )
+
+Signed-off-by: Bartosz Markowski <bartosz@plume.com>
+---
+ src/bm/src/bm_client.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/bm/src/bm_client.c b/src/bm/src/bm_client.c
+index 6250b14..61f713d 100644
+--- a/src/bm/src/bm_client.c
++++ b/src/bm/src/bm_client.c
+@@ -376,7 +376,7 @@ bm_client_update_pair(bm_client_t *client, bm_pair_t *pair)
+             }
+ 
+             // Blocked band
+-            if( !bsal_client_update( pair->bsal, blocked_band, (uint8_t *)&macaddr, &cli_conf ) < 0 ) {
++            if( bsal_client_update( pair->bsal, blocked_band, (uint8_t *)&macaddr, &cli_conf ) < 0 ) {
+                 LOGE( "Failed to update client '%s' for BSAL:%s",
+                         client->mac_addr, pair->ifcfg[blocked_band].ifname );
+                 return false;
+@@ -402,13 +402,13 @@ bm_client_update_pair(bm_client_t *client, bm_pair_t *pair)
+                 return false;
+             }
+ 
+-            if( !bsal_client_update( pair->bsal, BSAL_BAND_24G, (uint8_t *)&macaddr, &cli_conf ) < 0 ) {
++            if (bsal_client_update( pair->bsal, BSAL_BAND_24G, (uint8_t *)&macaddr, &cli_conf ) < 0 ) {
+                 LOGE( "Failed to update client '%s' for BSAL:%s",
+                         client->mac_addr, pair->ifcfg[BSAL_BAND_24G].ifname );
+                 return false;
+             }
+ 
+-            if( !bsal_client_update( pair->bsal, BSAL_BAND_5G, (uint8_t *)&macaddr, &cli_conf ) < 0 ) {
++            if (bsal_client_update( pair->bsal, BSAL_BAND_5G, (uint8_t *)&macaddr, &cli_conf ) < 0 ) {
+                 LOGE( "Failed to update client '%s' for BSAL:%s",
+                         client->mac_addr, pair->ifcfg[BSAL_BAND_5G].ifname );
+                 return false;
+-- 
+2.7.4
+
