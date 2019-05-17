@@ -375,4 +375,9 @@ RRECOMMENDS_libcrypto += "openssl-conf"
 RDEPENDS_${PN}-misc = "${@bb.utils.contains('PACKAGECONFIG', 'perl', 'perl', '', d)}"
 RDEPENDS_${PN}-ptest += "${PN}-misc make perl perl-module-filehandle bc"
 
+# Be compatible with the openssl 1.1.x recipe in oe-core, which moved the
+# openssl command line tool into the openssl-bin package.
+
+RPROVIDES_${PN} += "openssl-bin"
+
 BBCLASSEXTEND = "native nativesdk"
