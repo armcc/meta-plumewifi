@@ -1,0 +1,39 @@
+From 0145f14bbba24da8adbc026b285d65f3f0e3288e Mon Sep 17 00:00:00 2001
+From: Michal Kowalczyk <michal.kowalczyk@plume.com>
+Date: Wed, 3 Apr 2019 17:10:42 +0200
+Subject: [PATCH 3/4] wm2: monitor rrm and btm
+
+---
+ src/wm2/src/wm2_radio1.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/src/wm2/src/wm2_radio1.c b/src/wm2/src/wm2_radio1.c
+index 0c233309..8a3777ea 100644
+--- a/src/wm2/src/wm2_radio1.c
++++ b/src/wm2/src/wm2_radio1.c
+@@ -908,6 +908,22 @@ wm2_vif_equal(
+         }
+     }
+ 
++    if (ovsdb_update_changed(mon, SCHEMA_COLUMN(Wifi_VIF_Config, rrm))) {
++        VIF_EQUAL(SCHEMA_FIELD_CMP_INT(vconf, &vstate, rrm));
++        if (!is_equal) {
++            vconf_set->rrm = vconf->rrm;
++            vconf_set->rrm_exists = true;
++        }
++    }
++
++    if (ovsdb_update_changed(mon, SCHEMA_COLUMN(Wifi_VIF_Config, btm))) {
++        VIF_EQUAL(SCHEMA_FIELD_CMP_INT(vconf, &vstate, btm));
++        if (!is_equal) {
++            vconf_set->btm = vconf->btm;
++            vconf_set->btm_exists = true;
++        }
++    }
++
+ #undef VIF_EQUAL
+ 
+    return is_equal;
+-- 
+2.17.1
+

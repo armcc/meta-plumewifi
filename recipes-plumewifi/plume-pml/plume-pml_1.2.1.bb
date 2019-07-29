@@ -16,12 +16,15 @@ DEPENDS += "openssl"
 PV .= "+git${SRCPV}"
 
 SRCREV_pml = "5e9a15821f31ce2cb4c26fcdfcb714c2cf468b7a"
-SRCREV_vendor = "0ff06ec952cbc0ec78ef7644517bd961a2ce3fef"
+SRCREV_vendor = "3c9b84423b7b349ce8e44fc019339bf8bebd6116"
 SRCREV_FORMAT = "pml_vendor"
 
 SRC_URI = "${PLUME_GIT}/plume-pml.git;protocol=ssh;destsuffix=git/plume-pml;name=pml;branch=osync_1.2.1 \
            ${PLUME_GIT}/device-vendor-lgi.git;protocol=ssh;destsuffix=git/vendor/lgi;name=vendor;branch=osync_1.2.1 \
            file://0001-bsal-fix-bug-in-bsal_client_udpate-error-path-check.patch \
+           file://0004-evsched-reset-managers-on-time-change-to-the-past.patch \
+           file://0001-ESW-1927-bm-free-not-used-memory.patch \
+           file://0003-wm2-monitor-rrm-and-btm.patch \
 "
 
 S = "${WORKDIR}/git/plume-pml"

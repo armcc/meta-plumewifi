@@ -1,0 +1,46 @@
+From e175e1f626eb1e68bd5fd789d79815870eb99373 Mon Sep 17 00:00:00 2001
+From: Michal Kowalczyk <michal.kowalczyk@plume.com>
+Date: Mon, 15 Apr 2019 22:48:07 +0200
+Subject: [PATCH 4/4] evsched: reset managers on time change to the past
+
+There are too many dependencies to correct time in the system to handle
+it gracefully. The datetime change is usually a one-time action during
+boot-up, so resetting managers should not be harmful for the end user
+and yet it prevents undefined behavior.
+The example subsystems that are affected by time change are:
+- polling for associated clients on hostapd ctrl interface
+- band steering back-off time
+---
+ src/lib/evsched/src/evsched.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/lib/evsched/src/evsched.c b/src/lib/evsched/src/evsched.c
+index 6f8cc5b5..eb207e30 100644
+--- a/src/lib/evsched/src/evsched.c
++++ b/src/lib/evsched/src/evsched.c
+@@ -14,6 +14,7 @@
+ #include <ds_list.h>
+ 
+ #include "evsched.h"
++#include "target.h"
+ 
+ 
+ // Defines
+@@ -110,6 +111,14 @@ evsched_timer_callback(struct ev_loop *loop, ev_timer *timer, int revents)
+ 
+     tp = ds_list_ifirst(&iter, &evsched_tasklist);
+     while(tp) {
++        if (cur_tm < tp->sched_time) {
++            /* The system time has been shifted back. The best we can do is
++             * to reset the whole thing. Otherwise, the task may not be fired ever
++             * again.
++             */
++            LOGW("Time travel to the past detected!");
++            target_managers_restart();
++        }
+         if (tp->trigger_time > cur_tm) {
+             break;
+         }
+-- 
+2.17.1
+
