@@ -44,7 +44,7 @@ PARALLEL_MAKE = ""
 
 PML_TARGET ?= "CH7465CE"
 
-EXTRA_OEMAKE = "TARGET=${PML_TARGET} OEBUILD=1"
+EXTRA_OEMAKE = "TARGET=${PML_TARGET} TARGET_LDFLAGS='${TARGET_LDFLAGS}' OEBUILD=1"
 
 do_compile() {
     # Create a dummy Plume SDK top-level directory and Makefile.
