@@ -152,7 +152,7 @@ do_configure () {
 		target=linux-armv4
 		;;
 	linux-armeb)
-		target=linux-elf-armeb
+		target=linux-armv4
 		;;
 	linux-aarch64*)
 		target=linux-aarch64
