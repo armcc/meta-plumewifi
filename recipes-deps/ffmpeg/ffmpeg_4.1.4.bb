@@ -132,6 +132,7 @@ PACKAGES =+ "libavcodec \
              libswresample \
              libswscale"
 
+FILES_${PN}-doc += "${datadir)/${BPN}/examples"
 FILES_libavcodec = "${libdir}/libavcodec${SOLIBS}"
 FILES_libavdevice = "${libdir}/libavdevice${SOLIBS}"
 FILES_libavfilter = "${libdir}/libavfilter${SOLIBS}"
