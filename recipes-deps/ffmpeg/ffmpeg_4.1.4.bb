@@ -114,6 +114,15 @@ EXTRA_OECONF = " \
     --pkg-config=pkg-config \
 "
 
+# Do not trust configure to determine if ARM neon or vfp are available.
+#
+EXTRA_OECONF_ARM = " \
+    ${@bb.utils.contains("TUNE_FEATURES",'neon','--enable-neon','--disable-neon',d)} \
+    ${@bb.utils.contains('TUNE_FEATURES','vfp','--enable-vfp','--disable-vfp', d)} \
+"
+EXTRA_OECONF_append_arm = " ${EXTRA_OECONF_ARM}"
+EXTRA_OECONF_append_armeb = " ${EXTRA_OECONF_ARM}"
+
 EXTRA_OECONF_append_linux-gnux32 = " --disable-asm"
 # gold crashes on x86, another solution is to --disable-asm but thats more hacky
 # ld.gold: internal error in relocate_section, at ../../gold/i386.cc:3684
