@@ -79,7 +79,7 @@ PACKAGECONFIG[xv] = "--enable-outdev=xv,--disable-outdev=xv,libxv"
 PACKAGECONFIG[zlib] = "--enable-zlib,--disable-zlib,zlib"
 
 # Check codecs that require --enable-nonfree
-USE_NONFREE = "${@bb.utils.contains_any('PACKAGECONFIG', [ 'openssl' ], 'yes', '', d)}"
+USE_NONFREE = "${@bb.utils.contains('PACKAGECONFIG', 'openssl', 'yes', '', d)}"
 
 def cpu(d):
     for arg in (d.getVar('TUNE_CCARGS') or '').split():
