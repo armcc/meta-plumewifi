@@ -84,8 +84,8 @@ SRC_URI_remove = "file://debian1.0.2/version-script.patch"
 SRC_URI_remove = "file://debian/no-symbolic.patch"
 # ----------------------------------------------------------------------------
 
-SRC_URI[md5sum] = "ef66581b80f06eae42f5268bc0b50c6d"
-SRC_URI[sha256sum] = "14cb464efe7ac6b54799b34456bd69558a749a4931ecfd9cf9f71d7881cac7bc"
+SRC_URI[md5sum] = "cdc2638f789ecc2db2c91488265686c1"
+SRC_URI[sha256sum] = "ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16"
 
 UPSTREAM_CHECK_REGEX = "openssl-(?P<pver>1\.0.+)\.tar"
 
