@@ -58,7 +58,9 @@ EXTRA_OECONF = " \
     --disable-libcurl-option \
     --disable-ntlm-wb \
     --enable-crypto-auth \
-    --with-ca-bundle=${sysconfdir}/ssl/certs/ca-certificates.crt \
+    --without-ca-bundle \
+    --without-ca-path \
+    --without-ca-fallback \
     --without-libmetalink \
     --without-libpsl \
 "
@@ -84,7 +86,6 @@ do_install_append_class-target() {
 PACKAGES =+ "lib${BPN}"
 
 FILES_lib${BPN} = "${libdir}/lib*.so.*"
-RRECOMMENDS_lib${BPN} += "ca-certificates"
 
 FILES_${PN} += "${datadir}/zsh"
 
