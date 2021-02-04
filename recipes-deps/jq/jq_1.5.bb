@@ -27,4 +27,14 @@ EXTRA_OECONF += " \
     --disable-valgrind \
 "
 
+# We don't need a separate libjq.so for other apps to link with, so
+# save space by forcing the jq binary to link statically with libjq.
+
+EXTRA_OECONF += " \
+    --disable-shared --enable-static \
+"
+
+CFLAGS += "-ffunction-sections -fdata-sections"
+LDFLAGS += "-Wl,--gc-sections"
+
 BBCLASSEXTEND = "native"
