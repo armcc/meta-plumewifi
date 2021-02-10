@@ -23,7 +23,7 @@ PACKAGECONFIG_class-native = "ipv6 proxy ssl threaded-resolver verbose zlib"
 PACKAGECONFIG_class-nativesdk = "ipv6 proxy ssl threaded-resolver verbose zlib"
 
 PACKAGECONFIG_remove_class-target = "gnutls libidn verbose"
-PACKAGECONFIG_append_class-target = " ssl"
+PACKAGECONFIG_append_class-target = " ssl nghttp2"
 
 # 'ares' and 'threaded-resolver' are mutually exclusive
 PACKAGECONFIG[ares] = "--enable-ares,--disable-ares,c-ares"
