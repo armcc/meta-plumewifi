@@ -44,6 +44,7 @@ SRC_URI = "http://www.openssl.org/source/openssl-${PV}.tar.gz \
            file://0001-allow-manpages-to-be-disabled.patch \
            file://0001-Fix-BN_LLONG-breakage.patch \
            file://0001-Fix-DES_LONG-breakage.patch \
+           file://0001-Fix-possible-infinite-loop-in-BN_mod_sqrt.patch \
            "
 
 SRC_URI_append_class-target = " \
